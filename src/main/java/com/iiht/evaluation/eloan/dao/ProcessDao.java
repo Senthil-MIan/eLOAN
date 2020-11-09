@@ -32,4 +32,31 @@ public class ProcessDao {
 	    return processDto;
 	}
 	
+	public ProcessDto updateLoan(ConnectionDao connection,  Process process) throws SQLException {
+		ProcessDto processDto = null;
+	        try {
+	            Statement stmt = connection.connect().createStatement();
+	            	//	createStatement();
+	            String query = "update eloan.loan set status="+process.getLoanStatus()+" WHERE app_num="+process.getApplicationNumber()+";";
+	            ResultSet rs = stmt.executeQuery(query);
+
+	            
+	            	if(rs.next())
+	            	processDto = new ProcessDto(rs.getInt("app_num"), rs.getString("loan_name"),rs.getFloat("loan_amount"),rs.getDate("application_date"),rs.getString("business"),rs.getString("billing_indicator"),rs.getString("tax_indicator"),rs.getString("address"),rs.getString("mobile"),rs.getString("email"),rs.getString("status"));
+	            			
+
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }finally {
+	        	connection.disconnect();
+	        }
+
+	    return processDto;
+	}
+
+	public ProcessDto getProcess(ConnectionDao connDao, Process process) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

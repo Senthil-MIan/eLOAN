@@ -19,8 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.iiht.evaluation.eloan.dao.ConnectionDao;
 import com.iiht.evaluation.eloan.dao.ProcessDao;
+import com.iiht.evaluation.eloan.dao.UserDao;
 import com.iiht.evaluation.eloan.dto.LoanDto;
 import com.iiht.evaluation.eloan.dto.ProcessDto;
+import com.iiht.evaluation.eloan.dto.UserDto;
 import com.iiht.evaluation.eloan.model.ApprovedLoan;
 import com.iiht.evaluation.eloan.model.LoanInfo;
 import com.iiht.evaluation.eloan.model.User;
@@ -83,6 +85,13 @@ public class AdminController extends HttpServlet {
 	private String updatestatus(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		// TODO Auto-generated method stub
 		/* write the code for updatestatus of loan and return to admin home page */
+		
+		Process process = new Process();
+		/* process.setLoanStatus(request.getParameter("status")); */
+		process.setLoanStatus(request.getParameter("status"));
+		process.setApplicationNumber(request.getParameter("ApplicationNumber"));
+		
+		ProcessDto currentUser = new  ProcessDao().updateLoan(connDao,process);
 
 		return null;
 	}
@@ -109,7 +118,7 @@ public class AdminController extends HttpServlet {
 	private String adminLogout(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		/* write code to return index page */
-		return null;
+		return "index.jsp";
 	}
 
 	private String listall(HttpServletRequest request, HttpServletResponse response) throws SQLException {

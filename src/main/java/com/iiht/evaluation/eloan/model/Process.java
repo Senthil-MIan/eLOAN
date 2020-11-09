@@ -138,6 +138,9 @@ public class Process {
 		this.termPaymentAmount = termPaymentAmount;
 		this.closureDate = closureDate;
 	}
+	public Process() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	

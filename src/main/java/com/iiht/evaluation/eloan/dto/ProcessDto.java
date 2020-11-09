@@ -46,7 +46,7 @@ public class ProcessDto {
 	public void setBusiness(String business) {
 		this.business = business;
 	}
-	public String getBilling_indicatoer() {
+	public String getBilling_indicator() {
 		return billing_indicatoer;
 	}
 	public void setBilling_indicatoer(String billing_indicatoer) {

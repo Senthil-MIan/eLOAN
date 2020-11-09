@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+     <%@ page import="com.iiht.evaluation.eloan.dto.ProcessDto" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,9 +19,11 @@
 	<div align="right"><a href="adminhome1.jsp">Admin Home</a></div>
 			<div><label for="AppNum">Enter loan application number</label> </div>
 			<div><input type="text" id="applicationNum" name="applicationNum"> </div>
-			<input type="submit" value="Load" />
+			<input type="submit" value="View" />
 		</div>
 	</form>
+	
+	
 
 </body>
 </html>
