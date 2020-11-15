@@ -32,18 +32,18 @@
 			<tr>
 				<td>Application Number</td>
 				<%-- <td><input type="Application Number" name="Application Number" value="<%=data.getAppNum()%>" /></td> --%>
-				<td> <p> <%=data.getAppNum()%></p></td>
+				<td> <p> <%=data.getApplicationNumber()%></p></td>
 			</tr>
 				<tr>
 				<td>Loan Name</td>
 				<!-- <td><input type="Loan Name" name="Loan Name" /></td> -->
-				<td> <p> <%=data.getLoanName()%></p>
+				<td> <p> <%=data.getLoanType()%></p>
 			</tr>
 			
 				<tr>
 				<td>Amount Requested</td>
 				<!-- <td><input type="Amount Requested" name="Amount Requested" /></td> -->
-				<td> <p> <%=data.getAmountRequested()%></p>
+				<td> <p> <%=data.getLoanAmount()%></p>
 			</tr>
 			
 							
@@ -56,20 +56,20 @@
 				<tr>
 				<td>Business Structure</td>
 				<!-- <td><input type="Business Structure" name="Business Structure" /></td> -->
-				<td> <p> <%if(data.getBusiness().equals(0)) out.print("Individual");
+				<td> <p> <%if(data.getBusinessStructure().equals(0)) out.print("Individual");
                     else out.print("Organisation");%></p></td>
 			</tr>
 			
 				<tr>
 				<td>Billing Indicator</td>
 				<!-- <td><input type="Billing Indicator" name="password" /></td> -->
-				<td> <p> <%=data.getBilling_indicator()%></p>
+				<td> <p> <%=data.getBillingIndicator()%></p>
 			</tr>
 			
 				<tr>
 				<td>Tax Indicator</td>
 				<!-- <td><input type="Tax Indicator" name="password" /></td> -->
-				<td> <p> <%=data.getTax_indicator()%></p>
+				<td> <p> <%=data.getTaxIndicator()%></p>
 			</tr>
 			
 				<tr>
@@ -99,8 +99,7 @@
 value="<%if(data.getStatus().equals(0)) out.print("Approved");
                     else out.print("Not Approved");%>" />
                     <td> --%>
-                     <p> <%if(data.getStatus().equals(0)) out.print("Approved");
-                    else out.print("Not Approved");%></p>
+                     <p> <%=data.getLoanStatus()%></p>
 				  </td>
 				
 			</tr>
@@ -114,17 +113,22 @@ value="<%if(data.getStatus().equals(0)) out.print("Approved");
 				<table border="1" width="303">
 					<tr>
 				<td>Application Number</td>
-				<td><input type="Application Number" name="ApplicationNumber" value="<%=data.getAppNum()%>" disabled="true" /></td> 
+				<td><input type="number" name="applicationNumber" value="<%=data.getApplicationNumber()%>" readonly="readonly"/></td> 
 				
 			</tr>
 				<td>Amount Sanctioned</td>
-				<td><input type="Amount Sanctioned" name="AmountSanctioned" /></td>
+				<td><input type="number" name="amountSanctioned" min=0 /></td>
+			</tr>
+			
+			</tr>
+				<td>Interest Rate</td>
+				<td><input type="number" name="interest" min=0 step="any"/></td>
 			</tr>
 			<tr>
 				<td>Status</td>
 				<td><select name="status">
-    <option value="1">Approved</option>
-    <option value="2">Rejected</option>
+    <option value="Approved">Approved</option>
+    <option value="Rejected">Rejected</option>
   
   </select></td>
 				
@@ -134,25 +138,25 @@ value="<%if(data.getStatus().equals(0)) out.print("Approved");
 			<tr>
 			<tr>
 				<td>Term</td>
-				<td><input type="Term" name="Term" /></td>
+				<td><input type="number" name="term" min=0/></td>
 			</tr>
 			<tr>
 				<td>Payment Start Date</td>
-				<td><input type="Payment Start Date" name="Payment Start Date" /></td>
+				<td><input type="date" name="paymentStartDate" /></td>
 			</tr>
 			<tr>
 				<td>Loan Closure Date</td>
-				<td><input type="Loan Closure Date" name="Loan Closure Date" /></td>
+				<td><input type="date" name="loanClosureDate" /></td>
 			</tr>
 			<tr>
 				<td>EMI</td>
-				<td><input type="EMI" name="EMI" /></td>
+				<td><input type="number" name="emi" min=0 /></td>
 			</tr>
 			
 		</table>
 		<input type="submit" value="Update" />
 		
-		<a href="admin?action=process">Cancel</a></input>
+		<a href="admin?action=process">Cancel</a>
 
 	</form>
 	

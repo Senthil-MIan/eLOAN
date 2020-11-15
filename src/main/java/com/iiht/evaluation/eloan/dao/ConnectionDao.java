@@ -13,7 +13,7 @@ import javax.servlet.RequestDispatcher;
 
 import com.iiht.evaluation.eloan.dto.LoanDto;
 import com.iiht.evaluation.eloan.model.ApprovedLoan;
-import com.iiht.evaluation.eloan.model.LoanInfo;
+
 import com.iiht.evaluation.eloan.model.User;
 
 public class ConnectionDao {

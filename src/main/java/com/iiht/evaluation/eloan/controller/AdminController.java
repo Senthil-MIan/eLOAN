@@ -6,7 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -24,7 +27,7 @@ import com.iiht.evaluation.eloan.dto.LoanDto;
 import com.iiht.evaluation.eloan.dto.ProcessDto;
 import com.iiht.evaluation.eloan.dto.UserDto;
 import com.iiht.evaluation.eloan.model.ApprovedLoan;
-import com.iiht.evaluation.eloan.model.LoanInfo;
+
 import com.iiht.evaluation.eloan.model.User;
 import com.iiht.evaluation.eloan.model.Process;
 
@@ -82,18 +85,31 @@ public class AdminController extends HttpServlet {
 
 	}
 
-	private String updatestatus(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+	private String updatestatus(HttpServletRequest request, HttpServletResponse response) throws SQLException, ParseException {
 		// TODO Auto-generated method stub
 		/* write the code for updatestatus of loan and return to admin home page */
 		
 		Process process = new Process();
 		/* process.setLoanStatus(request.getParameter("status")); */
+		process.setApplicationNumber(request.getParameter("applicationNumber"));
+		process.setAmountSanctioned(Float.parseFloat(request.getParameter("amountSanctioned")));
+		process.setInterestRate(Float.parseFloat(request.getParameter("interest")));
 		process.setLoanStatus(request.getParameter("status"));
-		process.setApplicationNumber(request.getParameter("ApplicationNumber"));
+		process.setTerm(Integer.parseInt(request.getParameter("term")));
+		//process.setTermPaymentAmount(Float.parseFloat(request.getParameter("term")));
+		process.setPayStartDate(request.getParameter("paymentStartDate"));
+		process.setClosureDate(request.getParameter("loanClosureDate"));		
+		process.setEmi(Float.parseFloat(request.getParameter("emi")));
 		
-		ProcessDto currentUser = new  ProcessDao().updateLoan(connDao,process);
+		
+		boolean status = new  ProcessDao().updateLoan(connDao,process);
+		if(status == true) {
+			return "adminhome1.jsp";
+	} else {			
+		return "errorPage.jsp";
+	}
 
-		return null;
+		
 	}
 
 	private String callemi(HttpServletRequest request, HttpServletResponse response) throws SQLException {
@@ -122,17 +138,14 @@ public class AdminController extends HttpServlet {
 	}
 
 	private String listall(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-		List<LoanDto> loanData = new ArrayList<>();
-		LoanDto dto1 = new LoanDto();
-		dto1.setLoan_name("Home");
-		dto1.setApp_num(1);
-		dto1.setAddress("Address 1");
-		LoanDto dto2 = new LoanDto();
-		dto2.setLoan_name("Car");
-		dto2.setApp_num(2);
-		dto2.setAddress("Address 2");
-		loanData.add(dto1);
-		loanData.add(dto2);
+		List<ProcessDto> loanData=new ProcessDao().getAllLoan(connDao);
+		
+		/*
+		 * LoanDto dto1 = new LoanDto(); dto1.setLoan_name("Home"); dto1.setApp_num(1);
+		 * dto1.setAddress("Address 1"); LoanDto dto2 = new LoanDto();
+		 * dto2.setLoan_name("Car"); dto2.setApp_num(2); dto2.setAddress("Address 2");
+		 * loanData.add(dto1); loanData.add(dto2);
+		 */
 		/* write the code to display all the loans */
 		request.setAttribute("data", loanData);
 

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.HashMap"%>
-<%@ page import="com.iiht.evaluation.eloan.dto.LoanDto" %>
+<%@ page import="com.iiht.evaluation.eloan.dto.ProcessDto" %>
 <%@page language="java" import="java.util.*"%>
 <!DOCTYPE html>
 <html>
@@ -12,7 +12,10 @@
 <title>Display All Loans</title>
 </head>
 <body>
+
 <jsp:include page="header.jsp"/>
+<div align="right"><a href="index.jsp">Logout</a></div>
+<div align="right"><a href="adminhome1.jsp">Admin Home</a></div>
 	<table border="1" width="303">
 		<tr>
 			<td width="130"><b>APPLICATION NUMBER</b></td>
@@ -29,32 +32,30 @@
 			<td width="130"><b>ADDRESS</b></td>
 			<td width="130"><b>MOBILE</b></td>
 			<td width="130"><b>PAYMENT START DATE</b></td>
-			<td width="130"><b>TERM PAYMENT AMOUNT</b></td>
 			<td width="130"><b>CLOSURE DATE</b></td>
 		</tr>
  		<%
-			List<LoanDto> data = (List<LoanDto>) request.getAttribute("data");
+			List<ProcessDto> data = (List<ProcessDto>) request.getAttribute("data");
  		//String address ="";
 
 		for (int a = 0; a < data.size(); a++) {
 		%>
 		<tr>
-			<td width="119"><%=data.get(a).getApp_num()%></td>
-			<td width="119"><%=data.get(a).getLoan_name() %></td>
-			<td width="119"><%=data.get(a).getLoan_amount() %></td>
-			<td width="119"><%=data.get(a).getAmount_sanctioned()%></td>
-			<td width="119"><%=data.get(a).getBusiness()%></td>	
+			<td width="119"><%=data.get(a).getApplicationNumber()%></td>			
+			<td width="119"><%=data.get(a).getLoanType()%></td>
+			<td width="119"><%=data.get(a).getLoanAmount() %></td>
+			<td width="119"><%=data.get(a).getAmountSanctioned()%></td>
+			<td width="119"><%=data.get(a).getBusinessStructure()%></td>	
 			<td width="119"><%=data.get(a).getTerm() %></td>
-			<td width="119"><%=data.get(a).getStatus() %></td>
-			<td width="119"><%=data.get(a).getMonthly_payment() %></td>
-			<td width="119"><%=data.get(a).getTax_indicator() %></td>
-			<td width="119"><%=data.get(a).getInterest_rate()%></td>
-			<td width="119"><%=data.get(a).getBilling_indicator()%></td>
+			<td width="119"><%=data.get(a).getLoanStatus() %></td>
+			<td width="119"><%=data.get(a).getEmi()%></td>
+			<td width="119"><%=data.get(a).getTaxIndicator() %></td>
+			<td width="119"><%=data.get(a).getBillingIndicator()%></td>
 			<td width="119"><%=data.get(a).getAddress() %></td>
 			<td width="119"><%=data.get(a).getMobile() %></td>
-			<td width="119"><%=data.get(a).getPayment_start_date() %></td>
-			<td width="119"><%=data.get(a).getTerm_payment_amount() %></td>	
-			<td width="119"><%=data.get(a).getClosure_date() %></td>			
+			<td width="119"><%=data.get(a).getEmail() %></td>
+			<td width="119"><%=data.get(a).getPayStartDate() %></td>			
+			<td width="119"><%=data.get(a).getClosureDate() %></td>			
 			
 			
 			<%-- <%= address = data.get(a).getAddress()%> --%>

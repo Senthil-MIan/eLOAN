@@ -7,6 +7,7 @@
 <title>eLoan system</title>
 </head>
 <body>
+<jsp:include page="header.jsp"/>
 	<form action="/eloan/user?action=validate" method="post">
 		<table style="with: 50%">
  
@@ -18,11 +19,12 @@
 				<td>Password</td>
 				<td><input type="password" name="password" /></td>
 			</tr>
+
 		</table>
 		<input type="submit" value="Login" />
 	</form>
 	<a href="/eloan/register.jsp">Click to Register</a>
-</body>
+	<jsp:include page="footer.jsp"/>
 </body>
 
 </html>

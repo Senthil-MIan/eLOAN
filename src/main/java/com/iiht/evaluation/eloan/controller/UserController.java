@@ -18,14 +18,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.iiht.evaluation.eloan.dao.ConnectionDao;
+import com.iiht.evaluation.eloan.dao.ProcessDao;
 import com.iiht.evaluation.eloan.dao.UserDao;
+import com.iiht.evaluation.eloan.dto.ProcessDto;
 import com.iiht.evaluation.eloan.dto.UserDto;
 import com.iiht.evaluation.eloan.model.ApprovedLoan;
-import com.iiht.evaluation.eloan.model.LoanInfo;
+
 import com.iiht.evaluation.eloan.model.User;
 import com.mysql.cj.xdevapi.Statement;
 
-import jdk.internal.misc.FileSystemOption;
+import com.iiht.evaluation.eloan.model.Process;
+
+//import jdk.internal.misc.FileSystemOption;
 
 
 
@@ -74,7 +78,7 @@ private ConnectionDao connDao;
 				viewName=placeloan(request,response);
 				break;
 			case "application1":
-				viewName=application1(request,response);
+				viewName=application(request,response);
 				break;
 			case "editLoanProcess"  :
 				viewName=editLoanProcess(request,response);
@@ -93,6 +97,9 @@ private ConnectionDao connDao;
 				break;
 			case "editloan":
 				viewName = editloan(request, response);
+				break;	
+			case "loanUpdate":
+				viewName = loanUpdate(request, response);
 				break;	
 			case  "displaystatus" :
 				viewName=displaystatus(request,response);
@@ -122,6 +129,7 @@ private ConnectionDao connDao;
 		UserDto currentUser = new  UserDao().getUser(connDao,user);
 		
 		System.out.println(currentUser);
+		
 		if(currentUser != null) {
 			if(currentUser.getRole().equals("admin")) 	{				
 				return "adminhome1.jsp";
@@ -132,18 +140,42 @@ private ConnectionDao connDao;
 			return "errorPage.jsp";
 		}
 	}
-	private String placeloan(HttpServletRequest request, HttpServletResponse response) {
+	private String placeloan(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		// TODO Auto-generated method stub
 	/* write the code to place the loan information */
 		
-		//return null;
-		return "Hi";
+	  Process application = new Process();
+	  application.setLoanName(request.getParameter("LoanType"));
+	  application.setApplicationDate(request.getParameter("AppDate"));
+	  application.setLoanAmount(Float.parseFloat(request.getParameter("LoanAmount")));
+	  application.setApplicationDate(request.getParameter("AppDate"));
+	  application.setCustomerName(request.getParameter("customerName"));
+	  //application.setUserid(request.getParameter("username"));
+	  
+	  
+	   
+	  application.setBusinessStructure(request.getParameter("BusinessStructure"));
+	  application.setBillingIndicator(request.getParameter("BillingIndicator"));
+	  application.setTaxIndicator(request.getParameter("TaxIndicator"));
+	  application.setAddress(request.getParameter("Address"));
+	  application.setMobile(request.getParameter("Mobile"));
+	  application.setEmail(request.getParameter("EmailId"));
+	 
+	  boolean applyLoan = new  ProcessDao().applyLoan(connDao, application);
+	  
+	   if(applyLoan == true)
+	  { return "userhome.jsp"; } else
+	  { return "errorPage.jsp"; }
+	 
+		
+		
+		
 	}
-	private String application1(HttpServletRequest request, HttpServletResponse response) {
+	private String application(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 	/* write the code to display the loan application page */
 		
-		return null;
+		return "application.jsp";
 	}
 	private String editLoanProcess(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		// TODO Auto-generated method stub
@@ -186,13 +218,34 @@ private ConnectionDao connDao;
 		   number 
 		*/
 		
-		return null;
+		int ApplicationNumber=Integer.parseInt(request.getParameter("LoanAppNum"));
+		ProcessDto pDto=new ProcessDao().getLoan(connDao, ApplicationNumber);
+		request.setAttribute("data", pDto);
+		
+		return "displayStatus.jsp";
+		
+		
 	}
 
-	private String editloan(HttpServletRequest request, HttpServletResponse response) {
+	private String editloan(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		// TODO Auto-generated method stub
 	/* write a code to return to editloan page */
-		return null;
+		int ApplicationNumber=Integer.parseInt(request.getParameter("applicationNum"));
+		/* ProcessDto pDto=new ProcessDao().getLoan(connDao, ApplicationNumber); */
+		ProcessDto pDto=new ProcessDao().getLoan(connDao, ApplicationNumber);
+		
+		if(pDto.getLoanStatus().equals("Approved"))
+		{
+			request.setAttribute("validate", "Loan is already approved. Hence, can't edit");
+			return "editloan.jsp";
+		}
+		else
+		{
+			request.setAttribute("data", pDto);
+			return "editloanui.jsp";
+			
+		}		
+		
 	}
 
 	private String trackloan(HttpServletRequest request, HttpServletResponse response) {
@@ -202,11 +255,33 @@ private ConnectionDao connDao;
 		return null;
 	}
 
-	private String application(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-	/* write a code to return to trackloan page */
-		return null;
-	}
+	private String loanUpdate(HttpServletRequest request, HttpServletResponse response) throws SQLException
+	{
+	Process process = new Process();
+	/* process.setLoanStatus(request.getParameter("status")); */
+	process.setApplicationNumber(request.getParameter("applicationNumber"));
+	process.setLoanName(request.getParameter("loanType"));
+	process.setCustomerName(request.getParameter("customerName"));
+	process.setLoanAmount(Float.parseFloat(request.getParameter("amountRequested")));
+	process.setApplicationDate(request.getParameter("applicationDate"));
+	//process.setTermPaymentAmount(Float.parseFloat(request.getParameter("term")));
+	process.setBusinessStructure(request.getParameter("businessStructure"));
+	process.setBillingIndicator(request.getParameter("billingIndicator"));		
+	process.setTaxIndicator(request.getParameter("taxIndicator"));
+	process.setAddress(request.getParameter("address"));
+	process.setEmail(request.getParameter("email"));
+	process.setMobile(request.getParameter("mobile"));
+	
+	
+	
+	
+	boolean status = new  ProcessDao().loanUpdate(connDao,process);
+	if(status == true) {
+		return "adminhome1.jsp";
+} else {			
+	return "errorPage.jsp";
+}}
+
 	
 	static String extractPostRequestBody(HttpServletRequest request) {
 	    if ("POST".equalsIgnoreCase(request.getMethod())) {
